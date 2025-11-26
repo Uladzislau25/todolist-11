@@ -18,8 +18,13 @@ export type GetTasksResponse = {
 export type UpdateTaskModel = {
   description: string
   title: string
-  status: number
+  status: TaskStatus
   priority: number
   startDate: string
   deadline: string
+}
+export enum TaskStatus {
+  New,
+  InProgress,
+  Completed,
 }
