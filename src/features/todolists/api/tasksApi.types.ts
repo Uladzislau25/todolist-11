@@ -1,7 +1,7 @@
 export type DomainTask = {
   description: string
   title: string
-  status: number
+  status: TaskStatus
   priority: number
   startDate: string
   deadline: string
