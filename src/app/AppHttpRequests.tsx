@@ -19,15 +19,25 @@ export const AppHttpRequests = () => {
   const [tasks, setTasks] = useState<Record<string, DomainTask[]>>({})
 
   useEffect(() => {
-    todolistsApi.getTodolists().then((res) => {
-      const todolists = res.data
-      setTodolists(todolists)
-      todolists.forEach((todolist) => {
-        tasksApi.getTasks(todolist.id).then((res) => {
-          setTasks({ ...tasks, [todolist.id]: res.data.items })
+    const AsyncFunction = async () => {
+      /*todolistsApi.getTodolists().then((res) => {
+        const todolists = res.data
+        setTodolists(todolists)
+        todolists.forEach((todolist) => {
+          tasksApi.getTasks(todolist.id).then((res) => {
+            setTasks({ ...tasks, [todolist.id]: res.data.items })
+          })
         })
-      })
-    })
+      })*/
+      const todoListAsync = await todolistsApi.getTodolists()
+      const todolists = todoListAsync.data
+      setTodolists(todolists)
+      for (const tl of todolists) {
+        const tasksAsync = await tasksApi.getTasks(tl.id)
+        setTasks((tasks) => ({ ...tasks, [tl.id]: tasksAsync.data.items }))
+      }
+    }
+    void AsyncFunction()
   }, [])
 
   const createTodolist = (title: string) => {
