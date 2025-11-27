@@ -81,7 +81,22 @@ export const AppHttpRequests = () => {
     })
   }
 
-  const changeTaskTitle = (task: any, title: string) => {}
+  const changeTaskTitle = (task: DomainTask, title: string) => {
+    const model: UpdateTaskModel = {
+      description: task.description,
+      title: title,
+      priority: task.priority,
+      startDate: task.startDate,
+      deadline: task.deadline,
+      status: task.status,
+    }
+    tasksApi.updateTask({ todolistId: task.todoListId, taskId: task.id, model }).then((res) => {
+      setTasks({
+        ...tasks,
+        [task.todoListId]: tasks[task.todoListId].map((t) => (t.id === task.id ? res.data.data.item : t)),
+      })
+    })
+  }
 
   return (
     <div style={{ margin: "20px" }}>
