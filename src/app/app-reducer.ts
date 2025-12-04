@@ -17,6 +17,7 @@ export const appSlice = createSlice({
 
 export const { changeThemeModeAC } = appSlice.actions
 export const appReducer = appSlice.reducer
+
 export type ThemeMode = "dark" | "light"
 
 /*export const changeThemeModeAC = createAction<{ themeMode: ThemeMode }>("app/changeThemeMode")
