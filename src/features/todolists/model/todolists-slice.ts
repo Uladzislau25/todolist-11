@@ -1,4 +1,32 @@
-import { createAction, createReducer, nanoid } from "@reduxjs/toolkit"
+import { createAction, createReducer, createSlice, nanoid } from "@reduxjs/toolkit"
+
+export const todolistSlice = createSlice({
+  name: "todolists",
+  initialState: [] as Todolist[],
+  reducers: (create) => {
+    return {
+      deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
+        const index = state.findIndex((todolist) => todolist.id === action.payload.id)
+        if (index !== -1) {
+          state.splice(index, 1)
+        }
+      }),
+      createTodolistAC: create.preparedReducer(
+        (title: string) => {
+          const newTodolist: Todolist = {
+            id: nanoid(),
+            title,
+            filter: "all",
+          }
+          return { payload: newTodolist }
+        },
+        (state, action) => {
+          state.push(action.payload)
+        },
+      ),
+    }
+  },
+})
 
 export const deleteTodolistAC = createAction<{ id: string }>("todolists/deleteTodolist")
 export const createTodolistAC = createAction("todolists/createTodolist", (title: string) => {
