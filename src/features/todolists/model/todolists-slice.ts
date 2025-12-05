@@ -47,3 +47,6 @@ export type Todolist = {
 }
 
 export type FilterValues = "all" | "active" | "completed"
+
+export const { deleteTodolistAC, createTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC } =
+  todolistSlice.actions

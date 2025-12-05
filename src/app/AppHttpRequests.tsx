@@ -101,7 +101,7 @@ export const AppHttpRequests = () => {
   return (
     <div style={{ margin: "20px" }}>
       <CreateItemForm onCreateItem={createTodolist} />
-      {todolists.map((todolist) => (
+      {todolists?.map((todolist) => (
         <div key={todolist.id} style={container}>
           <div>
             <EditableSpan value={todolist.title} onChange={(title) => changeTodolistTitle(todolist.id, title)} />
