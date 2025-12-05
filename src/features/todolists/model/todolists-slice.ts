@@ -40,17 +40,6 @@ export const todolistSlice = createSlice({
   },
 })
 
-export const deleteTodolistAC = createAction<{ id: string }>("todolists/deleteTodolist")
-export const createTodolistAC = createAction("todolists/createTodolist", (title: string) => {
-  return { payload: { title, id: nanoid() } }
-})
-export const changeTodolistTitleAC = createAction<{ id: string; title: string }>("todolists/changeTodolistTitle")
-export const changeTodolistFilterAC = createAction<{ id: string; filter: FilterValues }>(
-  "todolists/changeTodolistFilter",
-)
-
-const initialState: Todolist[] = []
-
 export type Todolist = {
   id: string
   title: string
