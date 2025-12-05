@@ -1,4 +1,4 @@
-import { createAction, createReducer, createSlice, nanoid } from "@reduxjs/toolkit"
+import { createSlice, nanoid } from "@reduxjs/toolkit"
 
 export const todolistSlice = createSlice({
   name: "todolists",
