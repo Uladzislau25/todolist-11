@@ -24,6 +24,12 @@ export const todolistSlice = createSlice({
           state.push(action.payload)
         },
       ),
+      changeTodolistTitleAC: create.reducer<{ id: string; title: string }>((state, action) => {
+        const index = state.findIndex((todolist) => todolist.id === action.payload.id)
+        if (index !== -1) {
+          state[index].title = action.payload.title
+        }
+      }),
     }
   },
 })
