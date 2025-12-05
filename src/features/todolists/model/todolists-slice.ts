@@ -30,6 +30,12 @@ export const todolistSlice = createSlice({
           state[index].title = action.payload.title
         }
       }),
+      changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValues }>((state, action) => {
+        const todolist = state.find((todolist) => todolist.id === action.payload.id)
+        if (todolist) {
+          todolist.filter = action.payload.filter
+        }
+      }),
     }
   },
 })
