@@ -39,6 +39,11 @@ export const tasksSlice = createSlice({
       }),
     }
   },
+  extraReducers: (builder) => {
+    builder.addCase(createTodolistAC, (state, action) => {
+      state[action.payload.id] = []
+    })
+  },
 })
 
 const initialState: TasksState = {}
