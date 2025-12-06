@@ -40,9 +40,13 @@ export const tasksSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(createTodolistAC, (state, action) => {
-      state[action.payload.id] = []
-    })
+    builder
+      .addCase(createTodolistAC, (state, action) => {
+        state[action.payload.id] = []
+      })
+      .addCase(deleteTodolistAC, (state, action) => {
+        delete state[action.payload.id]
+      })
   },
 })
 
