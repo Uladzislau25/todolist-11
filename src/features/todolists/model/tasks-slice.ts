@@ -17,12 +17,16 @@ export const tasksSlice = createSlice({
         (todolistId, title) => {
           const newTask: Task = { title, isDone: false, id: nanoid() }
           return {
-            payload: todolistId,
-            task: newTask,
+            payload: { todolistId, task: newTask },
           }
         },
         (state, action) => {
-          state[action.payload.todolistId].unshift(action.payload.task)
+          const { todolistId, task } = action.payload
+          if (!state[todolistId]) {
+            state[todolistId] = [task]
+          } else {
+            state[todolistId].unshift(task)
+          }
         },
       ),
       changeTaskStatusAC: create.reducer<{ todolistId: string; taskId: string; isDone: boolean }>((state, action) => {
