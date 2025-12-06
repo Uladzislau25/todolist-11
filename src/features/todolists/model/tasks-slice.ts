@@ -13,6 +13,18 @@ export const tasksSlice = createSlice({
           tasks.splice(index, 1)
         }
       }),
+      createTaskAC: create.preparedReducer(
+        (todolistId, title) => {
+          const newTask: Task = { title, isDone: false, id: nanoid() }
+          return {
+            payload: todolistId,
+            task: newTask,
+          }
+        },
+        (state, action) => {
+          state[action.payload.todolistId].unshift(action.payload.task)
+        },
+      ),
     }
   },
 })
