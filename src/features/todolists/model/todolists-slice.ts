@@ -83,7 +83,6 @@ export const deleteTodolistTC = createAsyncThunk(
     }
   },
 )
-
 export type DomainTodolist = Todolist & {
   filter: FilterValues
 }
