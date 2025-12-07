@@ -47,10 +47,13 @@ export const todolistsSlice = createSlice({
   },
 })
 
-export const fetchTodolistsTC = createAsyncThunk(`${todolistsSlice.name}/fetchTodolistsTC`, (_, thunkAPI) => {
-  todolistsApi.getTodolists().then((res) => {
+export const fetchTodolistsTC = createAsyncThunk(`${todolistsSlice.name}/fetchTodolistsTC`, async (_, thunkAPI) => {
+  try {
+    const res = await todolistsApi.getTodolists()
     thunkAPI.dispatch(setTodolistsAC({ todolists: res.data }))
-  })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 export type DomainTodolist = Todolist & {
