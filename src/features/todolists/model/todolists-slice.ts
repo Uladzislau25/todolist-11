@@ -1,5 +1,6 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit"
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
+import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 
 export const todolistsSlice = createSlice({
   name: "todolists",
@@ -44,6 +45,12 @@ export const todolistsSlice = createSlice({
       }),
     }
   },
+})
+
+export const fetchTodolistsTC = createAsyncThunk(`${todolistsSlice.name}/fetchTodolistsTC`, (_, thunkAPI) => {
+  todolistsApi.getTodolists().then((res) => {
+    thunkAPI.dispatch(setTodolistsAC({ todolists: res.data }))
+  })
 })
 
 export type DomainTodolist = Todolist & {
