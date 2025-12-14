@@ -98,21 +98,42 @@ export const tasksSlice = createAppSlice({
           },
         },
       ),
+      changeTaskTitleTC: create.asyncThunk(
+        async (arg: { todolistId: string; taskId: string; title: string }, { getState, rejectWithValue }) => {
+          try {
+            const allTasks = (getState() as RootState).tasks
+            const tasksForTodolist = allTasks[arg.todolistId]
+            const task = tasksForTodolist.find((task) => {
+              return task.id === arg.taskId
+            })
 
-      changeTaskStatusAC: create.reducer<{ todolistId: string; taskId: string; status: TaskStatus }>(
-        (state, action) => {
-          const task = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
-          if (task) {
-            task.status = action.payload.status
+            if (!task) {
+              return rejectWithValue(null)
+            }
+
+            const model: UpdateTaskModel = {
+              description: task.description,
+              title: arg.title,
+              status: task.status,
+              priority: TaskPriority.Low,
+              startDate: task.startDate,
+              deadline: task.deadline,
+            }
+            await tasksApi.updateTask({ taskId: arg.taskId, todolistId: arg.todolistId, model })
+            return arg
+          } catch (error) {
+            return rejectWithValue(null)
           }
         },
+        {
+          fulfilled: (state, action) => {
+            const task = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
+            if (task) {
+              task.title = action.payload.title
+            }
+          },
+        },
       ),
-      changeTaskTitleAC: create.reducer<{ todolistId: string; taskId: string; title: string }>((state, action) => {
-        const task = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
-        if (task) {
-          task.title = action.payload.title
-        }
-      }),
     }
   },
   extraReducers: (builder) => {
@@ -125,7 +146,7 @@ export const tasksSlice = createAppSlice({
       })
   },
 })
-export const { changeTaskTitleAC, fetchTasksTC, createTasksTC, deleteTaskTC, changeTaskStatusTC } = tasksSlice.actions
+export const { changeTaskTitleTC, fetchTasksTC, createTasksTC, deleteTaskTC, changeTaskStatusTC } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer
 
 export type TasksState = Record<string, DomainTask[]>
