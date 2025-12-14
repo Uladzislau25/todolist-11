@@ -1,8 +1,7 @@
-import { nanoid } from "@reduxjs/toolkit"
 import { createTodolistTC, deleteTodolistTC } from "./todolists-slice.ts"
 import { createAppSlice } from "@/app/createAppSlice.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
-import { DomainTask, TaskPriority, TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
+import { DomainTask, TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
 
 export const tasksSlice = createAppSlice({
   name: "tasks",
@@ -27,6 +26,42 @@ export const tasksSlice = createAppSlice({
           },
         },
       ),
+      createTasksTC: create.asyncThunk(
+        async (arg: { todolistId: string; title: string }, thunkApi) => {
+          try {
+            const res = await tasksApi.createTask(arg)
+            return { task: res.data.data.item, todolistId: res.data.data.item.todoListId }
+          } catch (error) {
+            return thunkApi.rejectWithValue(null)
+          }
+        },
+        {
+          fulfilled: (state, action) => {
+            const { todolistId, task } = action.payload
+            state[todolistId].unshift(task)
+          },
+        },
+      ),
+      deleteTaskTC: create.asyncThunk(
+        async (arg: { todolistId: string; taskId: string }, thunkApi) => {
+          try {
+            await tasksApi.deleteTask(arg)
+            return { taskId: arg.taskId, todolistId: arg.todolistId }
+          } catch (error) {
+            return thunkApi.rejectWithValue(null)
+          }
+        },
+        {
+          fulfilled: (state, action) => {
+            const tasks = state[action.payload.todolistId]
+            const index = tasks.findIndex((task) => task.id === action.payload.taskId)
+            if (index !== -1) {
+              tasks.splice(index, 1)
+            }
+          },
+        },
+      ),
+
       deleteTaskAC: create.reducer<{ todolistId: string; taskId: string }>((state, action) => {
         const tasks = state[action.payload.todolistId]
         const index = tasks.findIndex((task) => task.id === action.payload.taskId)
@@ -34,29 +69,7 @@ export const tasksSlice = createAppSlice({
           tasks.splice(index, 1)
         }
       }),
-      createTaskAC: create.preparedReducer(
-        (todolistId, title) => {
-          const newTask: DomainTask = {
-            title,
-            status: TaskStatus.New,
-            id: nanoid(),
-            description: "",
-            priority: TaskPriority.Low,
-            startDate: "",
-            deadline: "",
-            todoListId: "",
-            order: 0,
-            addedDate: "",
-          }
-          return {
-            payload: { todolistId, task: newTask },
-          }
-        },
-        (state, action) => {
-          const { todolistId, task } = action.payload
-          state[todolistId].unshift(task)
-        },
-      ),
+
       changeTaskStatusAC: create.reducer<{ todolistId: string; taskId: string; status: TaskStatus }>(
         (state, action) => {
           const task = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
@@ -83,7 +96,7 @@ export const tasksSlice = createAppSlice({
       })
   },
 })
-export const { deleteTaskAC, createTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksTC } = tasksSlice.actions
+export const { changeTaskStatusAC, changeTaskTitleAC, fetchTasksTC, createTasksTC, deleteTaskTC } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer
 
 export type TasksState = Record<string, DomainTask[]>
