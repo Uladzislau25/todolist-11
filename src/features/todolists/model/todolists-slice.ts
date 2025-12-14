@@ -5,6 +5,9 @@ import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 export const todolistsSlice = createSlice({
   name: "todolists",
   initialState: [] as DomainTodolist[],
+  selectors: {
+    selectTodolists: (state) => state,
+  },
   reducers: (create) => {
     return {
       changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValues }>((state, action) => {
@@ -91,3 +94,4 @@ export type FilterValues = "all" | "active" | "completed"
 
 export const { changeTodolistFilterAC } = todolistsSlice.actions
 export const todolistsReducer = todolistsSlice.reducer
+export const { selectTodolists } = todolistsSlice.selectors

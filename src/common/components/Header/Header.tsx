@@ -1,5 +1,4 @@
-import { changeThemeModeAC } from "@/app/app-slice.ts"
-import { selectThemeMode } from "@/app/app-selectors"
+import { changeThemeModeAC, selectThemeMode } from "@/app/app-slice.ts"
 
 import { NavButton } from "@/common/components/NavButton/NavButton"
 import MenuIcon from "@mui/icons-material/Menu"

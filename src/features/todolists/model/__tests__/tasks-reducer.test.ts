@@ -1,13 +1,5 @@
 import { beforeEach, expect, test } from "vitest"
-import {
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  createTaskAC,
-  deleteTaskAC,
-  tasksReducer,
-  type TasksState,
-} from "../tasks-slice.ts"
-import {, deleteTodolistAC } from "../todolists-slice.ts"
+import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC, tasksReducer, type TasksState } from "../tasks-slice.ts"
 
 let startState: TasksState = {}
 
@@ -45,7 +37,7 @@ test("correct task should be deleted", () => {
 test("correct task should be created at correct array", () => {
   const endState = tasksReducer(
     startState,
-    createTaskAC({
+    createTaskTC({
       todolistId: "todolistId2",
       title: "juice",
     }),
