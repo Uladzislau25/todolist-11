@@ -29,6 +29,25 @@ export const todolistsSlice = createAppSlice({
           },
         },
       ),
+      changeTodolistTitleTC: create.asyncThunk(
+        async (args: { id: string; title: string }, thunkAPI) => {
+          const { rejectWithValue } = thunkAPI
+          try {
+            await todolistsApi.updateTodolist(args)
+            return args
+          } catch (e) {
+            return rejectWithValue(e)
+          }
+        },
+        {
+          fulfilled: (state, action) => {
+            const index = state.findIndex((todolist) => todolist.id === action.payload.id)
+            if (index !== -1) {
+              state[index].title = action.payload.title
+            }
+          },
+        },
+      ),
       changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValues }>((state, action) => {
         const todolist = state.find((todolist) => todolist.id === action.payload.id)
         if (todolist) {
@@ -40,12 +59,6 @@ export const todolistsSlice = createAppSlice({
   extraReducers: (builder) => {
     builder
 
-      .addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
-        const index = state.findIndex((todolist) => todolist.id === action.payload.id)
-        if (index !== -1) {
-          state[index].title = action.payload.title
-        }
-      })
       .addCase(createTodolistTC.fulfilled, (state, action) => {
         state.unshift({ ...action.payload, filter: "all" })
       })
@@ -58,18 +71,6 @@ export const todolistsSlice = createAppSlice({
   },
 })
 
-export const changeTodolistTitleTC = createAsyncThunk(
-  `${todolistsSlice.name}/changeTodolistTitleTC`,
-  async (args: { id: string; title: string }, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI
-    try {
-      await todolistsApi.updateTodolist(args)
-      return args
-    } catch (e) {
-      return rejectWithValue(e)
-    }
-  },
-)
 export const createTodolistTC = createAsyncThunk(
   `${todolistsSlice.name}/createTodolistTC`,
   async (args: { title: string }, thunkAPI) => {
@@ -100,6 +101,6 @@ export type DomainTodolist = Todolist & {
 
 export type FilterValues = "all" | "active" | "completed"
 
-export const { changeTodolistFilterAC, fetchTodolistsTC } = todolistsSlice.actions
+export const { changeTodolistFilterAC, fetchTodolistsTC, changeTodolistTitleTC } = todolistsSlice.actions
 export const todolistsReducer = todolistsSlice.reducer
 export const { selectTodolists } = todolistsSlice.selectors
