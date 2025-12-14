@@ -4,6 +4,9 @@ import { createTodolistTC, deleteTodolistTC } from "./todolists-slice.ts"
 export const tasksSlice = createSlice({
   name: "tasks",
   initialState: {} as TasksState,
+  selectors: {
+    selectTasks: (state) => state,
+  },
   reducers: (create) => {
     return {
       deleteTaskAC: create.reducer<{ todolistId: string; taskId: string }>((state, action) => {
@@ -59,3 +62,4 @@ export type Task = {
 }
 
 export type TasksState = Record<string, Task[]>
+export const { selectTasks } = tasksSlice.selectors
