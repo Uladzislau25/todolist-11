@@ -10,6 +10,7 @@ import Toolbar from "@mui/material/Toolbar"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
 import { getTheme } from "@/common/theme"
+import { LinearProgress } from "@mui/material"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -37,6 +38,7 @@ export const Header = () => {
           </div>
         </Container>
       </Toolbar>
+      <LinearProgress />
     </AppBar>
   )
 }
