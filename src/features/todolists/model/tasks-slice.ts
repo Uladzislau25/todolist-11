@@ -3,6 +3,7 @@ import { createAppSlice } from "@/app/createAppSlice.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, TaskPriority, TaskStatus, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
 import { RootState } from "@/app/store.ts"
+import { changeStatusAC } from "@/app/app-slice.ts"
 
 export const tasksSlice = createAppSlice({
   name: "tasks",
@@ -28,12 +29,16 @@ export const tasksSlice = createAppSlice({
         },
       ),
       createTasksTC: create.asyncThunk(
-        async (arg: { todolistId: string; title: string }, thunkApi) => {
+        async (arg: { todolistId: string; title: string }, { dispatch, rejectWithValue }) => {
           try {
+            dispatch(changeStatusAC({ status: "loading" }))
+            await new Promise((resolve) => setTimeout(resolve, 5000))
             const res = await tasksApi.createTask(arg)
+            dispatch(changeStatusAC({ status: "succeeded" }))
             return { task: res.data.data.item, todolistId: res.data.data.item.todoListId }
           } catch (error) {
-            return thunkApi.rejectWithValue(null)
+            dispatch(changeStatusAC({ status: "failed" }))
+            return rejectWithValue(null)
           }
         },
         {
