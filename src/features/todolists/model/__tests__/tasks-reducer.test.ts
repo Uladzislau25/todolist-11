@@ -1,12 +1,5 @@
 import { beforeEach, expect, test } from "vitest"
-import {
-  changeTaskStatusTC,
-  changeTaskTitleTC,
-  createTasksTC,
-  deleteTaskTC,
-  tasksReducer,
-  TasksState,
-} from "../tasks-slice.ts"
+import { createTasksTC, deleteTaskTC, tasksReducer, TasksState, updateTaskTC } from "../tasks-slice.ts"
 import { DomainTask, TaskPriority, TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
 import { createTodolistTC, deleteTodolistTC } from "@/features/todolists/model/todolists-slice.ts"
 let startState: TasksState = {}
@@ -155,10 +148,10 @@ test("correct task should be created at correct array", () => {
 })
 
 test("correct task should change its status", () => {
-  const action = changeTaskStatusTC.fulfilled(
-    { todolistId: "todolistId2", taskId: "2", status: TaskStatus.Completed },
+  const action = updateTaskTC.fulfilled(
+    { todolistId: "todolistId2", taskId: "2", domainModel: { status: TaskStatus.Completed } },
     "reqId",
-    { todolistId: "todolistId2", taskId: "2", status: TaskStatus.Completed },
+    { todolistId: "todolistId2", taskId: "2", domainModel: { status: TaskStatus.Completed } },
   )
   const endState = tasksReducer(startState, action)
 
@@ -167,11 +160,15 @@ test("correct task should change its status", () => {
 })
 
 test("correct task should change its title", () => {
-  const action = changeTaskTitleTC.fulfilled({ todolistId: "todolistId2", taskId: "2", title: "coffee" }, "reqId", {
-    todolistId: "todolistId2",
-    taskId: "2",
-    title: "coffee",
-  })
+  const action = updateTaskTC.fulfilled(
+    { todolistId: "todolistId2", taskId: "2", domainModel: { title: "coffee" } },
+    "reqId",
+    {
+      todolistId: "todolistId2",
+      taskId: "2",
+      domainModel: { title: "coffee" },
+    },
+  )
   const endState = tasksReducer(startState, action)
 
   expect(endState.todolistId2[1].title).toBe("coffee")
