@@ -2,6 +2,7 @@ import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/app/createAppSlice.ts"
 import { changeStatusAC } from "@/app/app-slice.ts"
+import { RequestStatus } from "@/common/components/types"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -25,9 +26,9 @@ export const todolistsSlice = createAppSlice({
           }
         },
         {
-          fulfilled: (state, action) => {
-            action.payload?.todolists.forEach((tl) => {
-              state.push({ ...tl, filter: "all" })
+          fulfilled: (_state, action) => {
+            return action.payload?.todolists.map((tl) => {
+              return { ...tl, filter: "all", entityStatus: "idle" }
             })
           },
         },
@@ -63,7 +64,7 @@ export const todolistsSlice = createAppSlice({
         },
         {
           fulfilled: (state, action) => {
-            state.unshift({ ...action.payload, filter: "all" })
+            state.unshift({ ...action.payload, filter: "all", entityStatus: "idle" })
           },
         },
       ),
@@ -98,6 +99,7 @@ export const todolistsSlice = createAppSlice({
 
 export type DomainTodolist = Todolist & {
   filter: FilterValues
+  entityStatus: RequestStatus
 }
 
 export type FilterValues = "all" | "active" | "completed"
