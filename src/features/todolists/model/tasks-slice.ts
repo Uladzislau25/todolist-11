@@ -33,7 +33,6 @@ export const tasksSlice = createAppSlice({
         async (arg: { todolistId: string; title: string }, { dispatch, rejectWithValue }) => {
           try {
             dispatch(changeStatusAC({ status: "loading" }))
-            await new Promise((resolve) => setTimeout(resolve, 3000))
             const res = await tasksApi.createTask(arg)
             dispatch(changeStatusAC({ status: "succeeded" }))
             return { task: res.data.data.item, todolistId: res.data.data.item.todoListId }
