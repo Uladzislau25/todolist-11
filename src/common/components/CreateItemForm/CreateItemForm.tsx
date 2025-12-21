@@ -2,14 +2,13 @@ import { type ChangeEvent, type KeyboardEvent, useState } from "react"
 import TextField from "@mui/material/TextField"
 import AddBoxIcon from "@mui/icons-material/AddBox"
 import IconButton from "@mui/material/IconButton"
-import { RequestStatus } from "@/common/components/types"
 
 type Props = {
   onCreateItem: (title: string) => void
-  entityStatus?: RequestStatus
+  disabled?: boolean
 }
 
-export const CreateItemForm = ({ onCreateItem, entityStatus }: Props) => {
+export const CreateItemForm = ({ onCreateItem, disabled }: Props) => {
   const [title, setTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
 
@@ -45,9 +44,9 @@ export const CreateItemForm = ({ onCreateItem, entityStatus }: Props) => {
         helperText={error}
         onChange={changeTitleHandler}
         onKeyDown={createItemOnEnterHandler}
-        disabled={entityStatus === "loading"}
+        disabled={disabled}
       />
-      <IconButton onClick={createItemHandler} color={"primary"} disabled={entityStatus === "loading"}>
+      <IconButton onClick={createItemHandler} color={"primary"} disabled={disabled}>
         <AddBoxIcon />
       </IconButton>
     </div>
