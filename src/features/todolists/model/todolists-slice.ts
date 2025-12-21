@@ -1,7 +1,7 @@
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/app/createAppSlice.ts"
-import { changeStatusAC } from "@/app/app-slice.ts"
+import { changeStatusAC, setErrorAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/components/types"
 
 export const todolistsSlice = createAppSlice({
@@ -54,12 +54,18 @@ export const todolistsSlice = createAppSlice({
       ),
       createTodolistTC: create.asyncThunk(
         async (args: { title: string }, thunkAPI) => {
-          const { rejectWithValue } = thunkAPI
+          const { dispatch, rejectWithValue } = thunkAPI
           try {
             const res = await todolistsApi.createTodolist(args)
-            return res.data.data.item
+            if (res.data.resultCode === 0) {
+              return res.data.data.item
+            } else {
+              const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"
+              dispatch(setErrorAC({ error: errorMessage }))
+              return rejectWithValue(null)
+            }
           } catch (e) {
-            return rejectWithValue(e)
+            return rejectWithValue(null)
           }
         },
         {
