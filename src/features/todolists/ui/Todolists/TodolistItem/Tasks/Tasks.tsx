@@ -4,7 +4,7 @@ import List from "@mui/material/List"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { fetchTasksTC, selectTasks } from "@/features/todolists/model/tasks-slice.ts"
 import { useEffect } from "react"
-import { TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/components/enums"
 
 type Props = {
   todolist: DomainTodolist

@@ -1,7 +1,8 @@
 import { beforeEach, expect, test } from "vitest"
 import { createTasksTC, deleteTaskTC, tasksReducer, TasksState, updateTaskTC } from "../tasks-slice.ts"
-import { DomainTask, TaskPriority, TaskStatus } from "@/features/todolists/api/tasksApi.types.ts"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
 import { createTodolistTC, deleteTodolistTC } from "@/features/todolists/model/todolists-slice.ts"
+import { TaskPriority, TaskStatus } from "@/common/components/enums"
 let startState: TasksState = {}
 
 beforeEach(() => {

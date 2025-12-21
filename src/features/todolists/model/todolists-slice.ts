@@ -3,6 +3,7 @@ import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/app/createAppSlice.ts"
 import { changeStatusAC, setErrorAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/components/types"
+import { ResultCode } from "@/common/components/enums"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -57,7 +58,7 @@ export const todolistsSlice = createAppSlice({
           const { dispatch, rejectWithValue } = thunkAPI
           try {
             const res = await todolistsApi.createTodolist(args)
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResultCode.Success) {
               return res.data.data.item
             } else {
               const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"

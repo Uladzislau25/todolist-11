@@ -4,7 +4,8 @@ import { CreateItemForm, EditableSpan } from "@/common/components/"
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
-import { DomainTask, TaskStatus, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
+import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/components/enums"
 
 // CRUD
 // Create - POST (создание)
