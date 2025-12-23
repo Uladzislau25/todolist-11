@@ -1,10 +1,11 @@
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/app/createAppSlice.ts"
-import { changeStatusAC, setErrorAC } from "@/app/app-slice.ts"
+import { changeStatusAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/components/types"
 import { ResultCode } from "@/common/components/enums"
 import { handleCatchErrors } from "@/common/utils/handleCatchErrors.ts"
+import { handleCodeError } from "@/common/utils/handleCodeError.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -62,8 +63,7 @@ export const todolistsSlice = createAppSlice({
             if (res.data.resultCode === ResultCode.Success) {
               return res.data.data.item
             } else {
-              const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"
-              dispatch(setErrorAC({ error: errorMessage }))
+              handleCodeError(res.data, dispatch)
               return rejectWithValue(null)
             }
           } catch (error) {
