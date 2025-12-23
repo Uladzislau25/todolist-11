@@ -4,6 +4,7 @@ import { createAppSlice } from "@/app/createAppSlice.ts"
 import { changeStatusAC, setErrorAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/components/types"
 import { ResultCode } from "@/common/components/enums"
+import { handleCatchErrors } from "@/common/utils/handleCatchErrors.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -65,7 +66,8 @@ export const todolistsSlice = createAppSlice({
               dispatch(setErrorAC({ error: errorMessage }))
               return rejectWithValue(null)
             }
-          } catch (e) {
+          } catch (error) {
+            handleCatchErrors(error, dispatch)
             return rejectWithValue(null)
           }
         },
