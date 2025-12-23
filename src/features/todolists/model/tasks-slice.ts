@@ -3,8 +3,9 @@ import { createAppSlice } from "@/app/createAppSlice.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
 import { RootState } from "@/app/store.ts"
-import { changeStatusAC } from "@/app/app-slice.ts"
+import { changeStatusAC, setErrorAC } from "@/app/app-slice.ts"
 import { UpdateTaskArgs } from "@/common/components/types"
+import { ResultCode } from "@/common/components/enums"
 
 export const tasksSlice = createAppSlice({
   name: "tasks",
@@ -34,8 +35,16 @@ export const tasksSlice = createAppSlice({
           try {
             dispatch(changeStatusAC({ status: "loading" }))
             const res = await tasksApi.createTask(arg)
-            dispatch(changeStatusAC({ status: "succeeded" }))
-            return { task: res.data.data.item, todolistId: res.data.data.item.todoListId }
+
+            if (res.data.resultCode === ResultCode.Success) {
+              dispatch(changeStatusAC({ status: "succeeded" }))
+              return { task: res.data.data.item, todolistId: res.data.data.item.todoListId }
+            } else {
+              dispatch(changeStatusAC({ status: "failed" }))
+              const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"
+              dispatch(setErrorAC({ error: errorMessage }))
+              return rejectWithValue(null)
+            }
           } catch (error) {
             dispatch(changeStatusAC({ status: "failed" }))
             return rejectWithValue(null)
