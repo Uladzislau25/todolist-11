@@ -10,7 +10,6 @@ import FormLabel from "@mui/material/FormLabel"
 import Grid from "@mui/material/Grid2"
 import TextField from "@mui/material/TextField"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-import styles from "./Login.module.css"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -63,6 +62,7 @@ export const Login = () => {
               label="Email"
               margin="normal"
               error={!!errors.email}
+              helperText={errors.email?.message}
               {...register("email", {
                 required: "Email is required",
                 pattern: {
@@ -71,7 +71,6 @@ export const Login = () => {
                 },
               })}
             />
-            {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
             <TextField type="password" label="Password" margin="normal" {...register("password")} />
             <FormControlLabel
               label="Remember me"
