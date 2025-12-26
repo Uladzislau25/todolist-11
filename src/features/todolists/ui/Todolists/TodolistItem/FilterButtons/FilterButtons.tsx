@@ -1,12 +1,12 @@
-import {
-  changeTodolistFilterAC,
-  DomainTodolist,
-  type FilterValues,
-} from "@/features/todolists/model/todolists-slice.ts"
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
 import { useAppDispatch } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
+import {
+  changeTodolistFilterAC,
+  type DomainTodolist,
+  type FilterValues,
+} from "@/features/todolists/model/todolists-slice"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 
 type Props = {
   todolist: DomainTodolist

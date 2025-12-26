@@ -1,3 +1,4 @@
-export { CreateItemForm } from "./CreateItemForm/CreateItemForm.tsx"
-export { EditableSpan } from "./EditableSpan/EditableSpan.tsx"
-export { ErrorSnackbar } from "./ErrorSnackBar/ErrorSnackBar.tsx"
+export { CreateItemForm } from "./CreateItemForm/CreateItemForm"
+export { EditableSpan } from "./EditableSpan/EditableSpan"
+export { Header } from "./Header/Header"
+export { NavButton } from "./NavButton/NavButton"

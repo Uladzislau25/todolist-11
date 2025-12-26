@@ -1,12 +1,13 @@
-import { TodolistItem } from "./TodolistItem/TodolistItem"
+import { useAppDispatch, useAppSelector } from "@/common/hooks"
+import { fetchTodolistsTC, selectTodolists } from "@/features/todolists/model/todolists-slice"
 import Grid from "@mui/material/Grid2"
 import Paper from "@mui/material/Paper"
-import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { useEffect } from "react"
-import { fetchTodolistsTC, selectTodolists } from "@/features/todolists/model/todolists-slice.ts"
+import { TodolistItem } from "./TodolistItem/TodolistItem"
 
 export const Todolists = () => {
   const todolists = useAppSelector(selectTodolists)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {

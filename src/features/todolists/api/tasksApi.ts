@@ -1,6 +1,6 @@
 import { instance } from "@/common/instance"
-import { DomainTask, GetTasksResponse, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
-import { BaseResponse } from "@/common/components/types"
+import type { BaseResponse } from "@/common/types"
+import type { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
 
 export const tasksApi = {
   getTasks(todolistId: string) {
