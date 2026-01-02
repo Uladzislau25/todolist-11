@@ -59,14 +59,19 @@ export const Login = () => {
             </p>
           </FormLabel>
           <FormGroup>
-            <TextField
-              label="Email"
-              margin="normal"
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              {...register("email", {
-                required: "Email is required",
-              })}
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: "Email is reqauired" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email"
+                  margin="normal"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+              )}
             />
             <TextField type="password" label="Password" margin="normal" {...register("password")} />
             <FormControlLabel
