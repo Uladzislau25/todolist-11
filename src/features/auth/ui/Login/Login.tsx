@@ -18,13 +18,7 @@ export const Login = () => {
 
   const theme = getTheme(themeMode)
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm<LoginInputs>({
+  const { register, handleSubmit, reset, control } = useForm<LoginInputs>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "", rememberMe: false },
   })
@@ -63,13 +57,13 @@ export const Login = () => {
               name="email"
               control={control}
               rules={{ required: "Email is reqauired" }}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <TextField
                   {...field}
                   label="Email"
                   margin="normal"
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
                 />
               )}
             />
