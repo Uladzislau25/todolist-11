@@ -18,7 +18,7 @@ export const Login = () => {
 
   const theme = getTheme(themeMode)
 
-  const { register, handleSubmit, reset, control } = useForm<LoginInputs>({
+  const { handleSubmit, reset, control } = useForm<LoginInputs>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "", rememberMe: false },
   })
@@ -67,7 +67,21 @@ export const Login = () => {
                 />
               )}
             />
-            <TextField type="password" label="Password" margin="normal" {...register("password")} />
+            <Controller
+              name="password"
+              control={control}
+              rules={{ required: "Password is required" }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="password"
+                  label="Password"
+                  margin="normal"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
             <FormControlLabel
               label="Remember me"
               control={
