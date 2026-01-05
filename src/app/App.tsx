@@ -1,4 +1,3 @@
-import "./App.css"
 import { selectThemeMode } from "@/app/app-slice"
 import { ErrorSnackbar, Header } from "@/common/components"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
@@ -9,6 +8,7 @@ import { Routing } from "@/common/routing"
 import { useEffect, useState } from "react"
 import { initializeAppTC } from "@/features/auth/model/auth-slice.ts"
 import { CircularProgress } from "@mui/material"
+import s from "./App.module.scss"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -18,11 +18,12 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(initializeAppTC())
+    setIsInitialized(true)
   }, [])
 
   if (!isInitialized) {
     return (
-      <div>
+      <div className={s.circularProgressContainer}>
         <CircularProgress size={150} thickness={3} />
       </div>
     )
