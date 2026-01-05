@@ -8,7 +8,7 @@ import { Routing } from "@/common/routing"
 import { useEffect, useState } from "react"
 import { initializeAppTC } from "@/features/auth/model/auth-slice.ts"
 import { CircularProgress } from "@mui/material"
-import s from "./App.module.scss"
+import s from "./App.module.css"
 
 export const App = () => {
   const themeMode = useAppSelector(selectThemeMode)
