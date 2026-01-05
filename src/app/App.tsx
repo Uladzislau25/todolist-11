@@ -7,18 +7,18 @@ import { ThemeProvider } from "@mui/material/styles"
 import { Routing } from "@/common/routing"
 import { useEffect, useState } from "react"
 import { initializeAppTC } from "@/features/auth/model/auth-slice.ts"
-import { CircularProgress } from "@mui/material"
+import CircularProgress from "@mui/material/CircularProgress"
 import s from "./App.module.css"
 
 export const App = () => {
+  const [isInitialized, setIsInitialized] = useState(false)
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
-  const [isInitialized, setIsInitialized] = useState<boolean>(false)
+
   const theme = getTheme(themeMode)
 
   useEffect(() => {
-    dispatch(initializeAppTC())
-    setIsInitialized(true)
+    dispatch(initializeAppTC()).finally(() => setIsInitialized(true))
   }, [])
 
   if (!isInitialized) {
@@ -30,7 +30,7 @@ export const App = () => {
   }
   return (
     <ThemeProvider theme={theme}>
-      <div className={"app"}>
+      <div className={s.app}>
         <CssBaseline />
         <Header />
         <Routing />
