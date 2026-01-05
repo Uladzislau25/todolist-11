@@ -9,11 +9,13 @@ import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
 export const Path = {
   Main: "/",
   Login: "/login",
+  Faq: "/faq",
   NotFound: "*",
 } as const
 
 export const Routing = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn)
+
   return (
     <Routes>
       <Route
@@ -21,6 +23,14 @@ export const Routing = () => {
         element={
           <ProtectedRoute isAllowed={isLoggedIn}>
             <Main />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={Path.Faq}
+        element={
+          <ProtectedRoute isAllowed={isLoggedIn}>
+            <h2>Faq</h2>
           </ProtectedRoute>
         }
       />
