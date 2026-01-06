@@ -52,7 +52,7 @@ export const authSlice = createAppSlice({
             dispatch(setAppStatusAC({ status: "succeeded" }))
             localStorage.removeItem(AUTH_TOKEN)
             dispatch(clearDataAC())
-            return { isLoggedIn: false }
+            return { isLoggedIn: false, emailName: "" }
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
@@ -65,6 +65,7 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn
+          state.emailName = action.payload.emailName
         },
       },
     ),
@@ -75,7 +76,7 @@ export const authSlice = createAppSlice({
           const res = await authApi.me()
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
-            return { isLoggedIn: true }
+            return { isLoggedIn: true, emailName: res.data.data.email }
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
@@ -88,6 +89,7 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn
+          state.emailName = action.payload.emailName
         },
       },
     ),
