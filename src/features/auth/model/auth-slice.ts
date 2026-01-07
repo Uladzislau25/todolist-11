@@ -22,11 +22,11 @@ export const authSlice = createAppSlice({
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
           const res = await authApi.login(data)
-          debugger
+
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
             localStorage.setItem(AUTH_TOKEN, res.data.data.token)
-            return { isLoggedIn: true, userName: data.email }
+            return { isLoggedIn: true }
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
@@ -39,7 +39,6 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn
-          state.userName = action.payload.userName
         },
       },
     ),
@@ -52,7 +51,7 @@ export const authSlice = createAppSlice({
             dispatch(setAppStatusAC({ status: "succeeded" }))
             localStorage.removeItem(AUTH_TOKEN)
             dispatch(clearDataAC())
-            return { isLoggedIn: false, userName: "" }
+            return { isLoggedIn: false }
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
@@ -65,7 +64,7 @@ export const authSlice = createAppSlice({
       {
         fulfilled: (state, action) => {
           state.isLoggedIn = action.payload.isLoggedIn
-          state.userName = action.payload.userName
+          state.userName = ""
         },
       },
     ),
@@ -76,7 +75,7 @@ export const authSlice = createAppSlice({
           const res = await authApi.me()
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
-            return { isLoggedIn: true, userName: res.data.data.email }
+            return { isLoggedIn: true, userName: res.data.data.login }
           } else {
             handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)

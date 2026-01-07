@@ -35,7 +35,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            {userName && <span>{userName}</span>}
+            {userName != "" && <span>{userName}</span>}
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
