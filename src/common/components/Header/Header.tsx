@@ -18,7 +18,7 @@ export const Header = () => {
 
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const userName = useAppSelector(selectUserLogin)
+  const userLogin = useAppSelector(selectUserLogin)
   const theme = getTheme(themeMode)
 
   const changeMode = () => {
@@ -35,7 +35,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            {userName != "" && <span>{userName}</span>}
+            {userLogin != "" && <span>{userLogin}</span>}
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
