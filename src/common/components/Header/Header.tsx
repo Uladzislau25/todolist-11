@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton"
 import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
 import LinearProgress from "@mui/material/LinearProgress"
-import { logoutTC, selectIsLoggedIn, selectUserName } from "@/features/auth/model/auth-slice.ts"
+import { logoutTC, selectIsLoggedIn, selectUserLogin } from "@/features/auth/model/auth-slice.ts"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -18,7 +18,7 @@ export const Header = () => {
 
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const userName = useAppSelector(selectUserName)
+  const userName = useAppSelector(selectUserLogin)
   const theme = getTheme(themeMode)
 
   const changeMode = () => {
