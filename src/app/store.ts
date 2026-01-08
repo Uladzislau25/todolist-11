@@ -4,6 +4,7 @@ import { configureStore } from "@reduxjs/toolkit"
 import { appReducer, appSlice } from "./app-slice.ts"
 import { authReducer, authSlice } from "@/features/auth/model/auth-slice.ts"
 import { todolistsApi } from "@/features/todolists/api/_todolistsApi.ts"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 export const store = configureStore({
   reducer: {
@@ -22,3 +23,4 @@ export type AppDispatch = typeof store.dispatch
 // для возможности обращения к store в консоли браузера
 // @ts-ignore
 window.store = store
+setupListeners(store.dispatch)
