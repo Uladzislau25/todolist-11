@@ -3,6 +3,7 @@ import { todolistsReducer, todolistsSlice } from "@/features/todolists/model/tod
 import { configureStore } from "@reduxjs/toolkit"
 import { appReducer, appSlice } from "./app-slice.ts"
 import { authReducer, authSlice } from "@/features/auth/model/auth-slice.ts"
+import { todolistsApi } from "@/features/todolists/api/_todolistsApi.ts"
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     [todolistsSlice.name]: todolistsReducer,
     [appSlice.name]: appReducer,
     [authSlice.name]: authReducer,
+    [todolistsApi.reducerPath]: todolistsApi.reducer,
   },
 })
 
