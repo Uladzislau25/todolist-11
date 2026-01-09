@@ -43,12 +43,30 @@ export const todolistsApi = createApi({
         body: { title },
       }),
     }),
+    deleteTodolist: build.mutation<BaseResponse, string>({
+      query: (id) => ({
+        url: `todo-lists/${id}`,
+        method: "delete",
+      }),
+    }),
+    changeTodolist: build.mutation<BaseResponse, { id: string; title: string }>({
+      query: ({ id, title }) => ({
+        url: `todo-lists/${id}`,
+        method: "put",
+        body: { title },
+      }),
+    }),
   }),
 })
 
 // `createApi` создает объект `API`, который содержит все эндпоинты в виде хуков,
 // определенные в свойстве `endpoints`
-export const { useLazyGetTodolistsQuery, useCreateTodolistMutation } = todolistsApi
+export const {
+  useLazyGetTodolistsQuery,
+  useCreateTodolistMutation,
+  useDeleteTodolistMutation,
+  useChangeTodolistMutation,
+} = todolistsApi
 
 export const _todolistsApi = {
   getTodolists() {
