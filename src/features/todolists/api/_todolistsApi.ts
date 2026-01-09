@@ -41,7 +41,7 @@ export const todolistsApi = createApi({
 
 // `createApi` создает объект `API`, который содержит все эндпоинты в виде хуков,
 // определенные в свойстве `endpoints`
-export const { useGetTodolistsQuery } = todolistsApi
+export const { useLazyGetTodolistsQuery } = todolistsApi
 
 export const _todolistsApi = {
   getTodolists() {
