@@ -11,6 +11,7 @@ import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
 export const todolistsApi = createApi({
   // `reducerPath` - имя `slice`, куда будут сохранены состояние и экшены для этого `API`
   reducerPath: "todolistsApi",
+  tagTypes: ["Todolist"],
   // `baseQuery` - конфигурация для `HTTP-клиента`, который будет использоваться для отправки запросов
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
@@ -35,6 +36,7 @@ export const todolistsApi = createApi({
           filter: "all",
           entityStatus: "idle",
         })),
+      providesTags: ["Todolist"],
     }),
     createTodolist: build.mutation<BaseResponse<{ item: Todolist }>, string>({
       query: (title) => ({
@@ -42,12 +44,14 @@ export const todolistsApi = createApi({
         method: "post",
         body: { title },
       }),
+      invalidatesTags: ["Todolist"],
     }),
     deleteTodolist: build.mutation<BaseResponse, string>({
       query: (id) => ({
         url: `todo-lists/${id}`,
         method: "delete",
       }),
+      invalidatesTags: ["Todolist"],
     }),
     changeTodolist: build.mutation<BaseResponse, { id: string; title: string }>({
       query: ({ id, title }) => ({
@@ -55,18 +59,15 @@ export const todolistsApi = createApi({
         method: "put",
         body: { title },
       }),
+      invalidatesTags: ["Todolist"],
     }),
   }),
 })
 
 // `createApi` создает объект `API`, который содержит все эндпоинты в виде хуков,
 // определенные в свойстве `endpoints`
-export const {
-  useLazyGetTodolistsQuery,
-  useCreateTodolistMutation,
-  useDeleteTodolistMutation,
-  useChangeTodolistMutation,
-} = todolistsApi
+export const { useGetTodolistsQuery, useCreateTodolistMutation, useDeleteTodolistMutation, useChangeTodolistMutation } =
+  todolistsApi
 
 export const _todolistsApi = {
   getTodolists() {
