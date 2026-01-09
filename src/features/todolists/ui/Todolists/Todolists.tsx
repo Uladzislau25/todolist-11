@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper"
 
 import { TodolistItem } from "./TodolistItem/TodolistItem"
 
-import { useLazyGetTodolistsQuery } from "@/features/todolists/api/_todolistsApi.ts"
+import { useLazyGetTodolistsQuery } from "@/features/todolists/api/todolistsApi.ts"
 
 export const Todolists = () => {
   const [trigger, { data }] = useLazyGetTodolistsQuery()
