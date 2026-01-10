@@ -1,8 +1,8 @@
-import { setAppStatusAC } from "@/app/app-slice"
-import { ResultCode } from "@/common/enums"
+//import { setAppStatusAC } from "@/app/app-slice"
+//import { ResultCode } from "@/common/enums"
 import type { RequestStatus } from "@/common/types"
-import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
-import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
+import { createAppSlice /*handleServerAppError, handleServerNetworkError*/ } from "@/common/utils"
+// import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import type { Todolist } from "@/features/todolists/api/todolistsApi.types"
 import { clearDataAC } from "@/common/actions"
 
@@ -13,7 +13,7 @@ export const todolistsSlice = createAppSlice({
     selectTodolists: (state) => state,
   },
   reducers: (create) => ({
-    fetchTodolistsTC: create.asyncThunk(
+    /*fetchTodolistsTC: create.asyncThunk(
       async (_, { dispatch, rejectWithValue }) => {
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
@@ -110,19 +110,19 @@ export const todolistsSlice = createAppSlice({
           }
         },
       },
-    ),
+    ),*/
     changeTodolistFilterAC: create.reducer<{ id: string; filter: FilterValues }>((state, action) => {
       const todolist = state.find((todolist) => todolist.id === action.payload.id)
       if (todolist) {
         todolist.filter = action.payload.filter
       }
     }),
-    changeTodolistStatusAC: create.reducer<{ id: string; entityStatus: RequestStatus }>((state, action) => {
+    /*changeTodolistStatusAC: create.reducer<{ id: string; entityStatus: RequestStatus }>((state, action) => {
       const todolist = state.find((todolist) => todolist.id === action.payload.id)
       if (todolist) {
         todolist.entityStatus = action.payload.entityStatus
       }
-    }),
+    }),*/
   }),
   extraReducers: (builder) => {
     builder.addCase(clearDataAC, () => {
@@ -131,14 +131,14 @@ export const todolistsSlice = createAppSlice({
   },
 })
 
-export const { selectTodolists } = todolistsSlice.selectors
+//export const { _selectTodolists } = todolistsSlice.selectors
 export const {
-  fetchTodolistsTC,
+  /*  fetchTodolistsTC,
   createTodolistTC,
   deleteTodolistTC,
-  changeTodolistTitleTC,
+  changeTodolistTitleTC,*/
   changeTodolistFilterAC,
-  changeTodolistStatusAC,
+  /*changeTodolistStatusAC,*/
 } = todolistsSlice.actions
 export const todolistsReducer = todolistsSlice.reducer
 
