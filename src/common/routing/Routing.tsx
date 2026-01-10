@@ -4,7 +4,7 @@ import { Login } from "@/features/auth/ui/Login/Login.tsx"
 import { PageNotFound } from "@/common/components"
 import { ProtectedRoute } from "@/common/components/ProtectedRoute/ProtectedRoute.tsx"
 import { useSelector } from "react-redux"
-import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
+import { selectIsLoggedIn } from "@/app/app-slice.ts"
 
 export const Path = {
   Main: "/",
