@@ -1,4 +1,4 @@
-import { changeThemeModeAC, selectAppStatus, selectThemeMode } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectAppStatus, selectThemeMode, setIsLoggedInAC } from "@/app/app-slice.ts"
 import { useAppDispatch, useAppSelector } from "@/common/hooks"
 import { containerSx } from "@/common/styles"
 import { getTheme } from "@/common/theme"
@@ -10,7 +10,11 @@ import IconButton from "@mui/material/IconButton"
 import Switch from "@mui/material/Switch"
 import Toolbar from "@mui/material/Toolbar"
 import LinearProgress from "@mui/material/LinearProgress"
-import { logoutTC, selectIsLoggedIn, selectUserLogin } from "@/features/auth/model/auth-slice.ts"
+import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
+import { useLogoutMutation } from "@/features/auth/api/authApi.tsx"
+import { ResultCode } from "@/common/enums"
+import { AUTH_TOKEN } from "@/common/constants"
+import { clearDataAC } from "@/common/actions"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -18,14 +22,20 @@ export const Header = () => {
 
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const userLogin = useAppSelector(selectUserLogin)
   const theme = getTheme(themeMode)
-
+  const [logout] = useLogoutMutation()
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
+
   const logoutHandler = () => {
-    dispatch(logoutTC())
+    logout().then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedInAC({ isLoggedIn: false }))
+        localStorage.removeItem(AUTH_TOKEN)
+        dispatch(clearDataAC())
+      }
+    })
   }
   return (
     <AppBar position="static" sx={{ mb: "30px" }}>
@@ -35,7 +45,6 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
-            {userLogin != "" && <span>{userLogin}</span>}
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
