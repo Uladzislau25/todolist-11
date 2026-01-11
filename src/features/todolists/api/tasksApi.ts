@@ -7,12 +7,14 @@ export const tasksApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getTasks: build.query<GetTasksResponse, string>({
       query: (todolistId) => `/todo-lists/${todolistId}/tasks`,
+      providesTags: ["Task"],
     }),
     deleteTask: build.mutation<BaseResponse, { todolistId: string; taskId: string }>({
       query: ({ todolistId, taskId }) => ({
         url: `/todo-lists/${todolistId}/tasks/${taskId}`,
         method: "delete",
       }),
+      invalidatesTags: ["Task"],
     }),
     createTask: build.mutation<BaseResponse<{ item: DomainTask }>, { todolistId: string; title: string }>({
       query: ({ todolistId, title }) => ({
@@ -20,6 +22,7 @@ export const tasksApi = baseApi.injectEndpoints({
         method: "post",
         body: { title },
       }),
+      invalidatesTags: ["Task"],
     }),
     updateTask: build.mutation<
       BaseResponse<{ item: DomainTask }>,
@@ -30,6 +33,7 @@ export const tasksApi = baseApi.injectEndpoints({
         method: "put",
         body: { model },
       }),
+      invalidatesTags: ["Task"],
     }),
   }),
 })
