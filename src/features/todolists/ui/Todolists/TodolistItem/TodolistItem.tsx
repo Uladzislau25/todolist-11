@@ -1,26 +1,25 @@
-import { useAppDispatch } from "@/common/hooks"
-import { createTaskTC } from "@/features/todolists/model/tasks-slice"
 import type { DomainTodolist } from "@/features/todolists/model/todolists-slice"
 import { FilterButtons } from "./FilterButtons/FilterButtons"
 import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"
 import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm"
+import { useCreateTaskMutation } from "@/features/todolists/api/tasksApi.ts"
 
 type Props = {
   todolist: DomainTodolist
 }
 
 export const TodolistItem = ({ todolist }: Props) => {
-  const dispatch = useAppDispatch()
+  const [createTask] = useCreateTaskMutation()
 
-  const createTask = (title: string) => {
-    dispatch(createTaskTC({ todolistId: todolist.id, title }))
+  const createTaskHandler = (title: string) => {
+    createTask({ todolistId: todolist.id, title })
   }
 
   return (
     <div>
       <TodolistTitle todolist={todolist} />
-      <CreateItemForm onCreateItem={createTask} disabled={todolist.entityStatus === "loading"} />
+      <CreateItemForm onCreateItem={createTaskHandler} disabled={todolist.entityStatus === "loading"} />
       <Tasks todolist={todolist} />
       <FilterButtons todolist={todolist} />
     </div>
