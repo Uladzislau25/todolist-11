@@ -34,6 +34,7 @@ export const tasksApi = baseApi.injectEndpoints({
   }),
 })
 
+export const { useGetTasksQuery, useUpdateTaskMutation, useDeleteTaskMutation, useCreateTaskMutation } = tasksApi
 export const _tasksApi = {
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`/todo-lists/${todolistId}/tasks`)
