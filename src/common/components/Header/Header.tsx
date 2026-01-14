@@ -19,7 +19,7 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useLogoutMutation } from "@/features/auth/api/authApi.tsx"
 import { ResultCode } from "@/common/enums"
 import { AUTH_TOKEN } from "@/common/constants"
-import { baseApi } from "@/app/baseApi.ts"
+import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -34,13 +34,17 @@ export const Header = () => {
   }
 
   const logoutHandler = () => {
-    logout().then((res) => {
-      if (res.data?.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedInAC({ isLoggedIn: false }))
-        localStorage.removeItem(AUTH_TOKEN)
-        dispatch(baseApi.util.resetApiState())
-      }
-    })
+    logout()
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedInAC({ isLoggedIn: false }))
+          localStorage.removeItem(AUTH_TOKEN)
+          //dispatch(baseApi.util.resetApiState())// зачистка всего стейта
+        }
+      })
+      .then(() => {
+        dispatch(tasksApi.util.invalidateTags(["Task"])) // зачистка тасок
+      })
   }
   return (
     <AppBar position="static" sx={{ mb: "30px" }}>
