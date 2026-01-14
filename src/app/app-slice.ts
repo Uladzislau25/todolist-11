@@ -29,6 +29,16 @@ export const appSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn
     }),
   }),
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      (action) => {
+        return action.type.endsWith("/pending")
+      },
+      (state) => {
+        state.status = "loading"
+      },
+    )
+  },
 })
 
 export const { selectThemeMode, selectAppStatus, selectAppError, selectIsLoggedIn } = appSlice.selectors
