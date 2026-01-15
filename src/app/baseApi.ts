@@ -37,7 +37,11 @@ export const baseApi = createApi({
           }
           break
         default:
-          error = JSON.stringify(result.error)
+          if (result.error.status >= 500 && result.error.status < 600) {
+            error = "Server error occurred. Please try again later."
+          } else {
+            error = JSON.stringify(result.error)
+          }
           break
       }
       api.dispatch(setAppErrorAC({ error }))
