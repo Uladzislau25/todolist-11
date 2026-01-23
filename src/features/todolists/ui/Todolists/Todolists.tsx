@@ -8,7 +8,7 @@ import { TodolistSkeleton } from "@/features/todolists/ui/Todolists/TodolistSkel
 import Box from "@mui/material/Box"
 
 export const Todolists = () => {
-  const { data, isLoading } = useGetTodolistsQuery()
+  const { data, isLoading } = useGetTodolistsQuery(undefined, { pollingInterval: 3000, skipPollingIfUnfocused: true })
 
   if (isLoading) {
     return (
